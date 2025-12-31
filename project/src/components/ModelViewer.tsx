@@ -8,9 +8,14 @@ declare global {
   }
 }
 
-export function Background3D() {
+interface ModelViewerProps {
+  modelId: string;
+  title: string;
+  initialPosition?: number[];
+}
+
+export function ModelViewer({ modelId, title, initialPosition = [1.5, 0, 0.5] }: ModelViewerProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const modelId = '8d7bfeb3f112498a905b77643638df89';
   
   useEffect(() => {
     const script = document.createElement('script');
@@ -22,7 +27,7 @@ export function Background3D() {
         const client = new window.Sketchfab(iframeRef.current);
 
         client.init(modelId, {
-          autostart: 1,
+          autostart: 0,
           autospin: 1,
           transparent: 1,
           ui_hint: 0,
@@ -47,27 +52,13 @@ export function Background3D() {
             api.addEventListener('viewerready', () => {
               console.log('Sketchfab Viewer ready');
               
-              // Simplificado e Limpo: Sem loops, sem stuttering.
-              // Apenas definimos a posição ideal UMA vez.
-              
               api.getCameraLookAt((err: any, camera: any) => {
                 if (err) return;
 
                 const { target } = camera;
-
-                // Configuração Fixa e Robusta:
-                // 1. Angulo "De cima para baixo" (High Elevation): Y elevado.
-                // 2. Tamanho ~75% (Distance): Z afastado o suficiente.
                 
-                // Posição calculada manualmente para um "Top-Down Isometric" agradável
-                // X: 0 (Centralizado)
-                // Y: 6 (Bem alto para ver o topo do console)
-                // Z: 10.8 (Afastado +20% para dar mais margem)
-                
-                const idealPosition = [1.5, 0, 0.5]; 
-
-                // Aplica instantaneamente (duration 0) para não haver transição visível
-                api.setCameraLookAt(idealPosition, target, 0);
+                // Use the passed initial position or default
+                api.setCameraLookAt(initialPosition, target, 0);
               });
             });
           },
@@ -85,14 +76,14 @@ export function Background3D() {
         document.body.removeChild(script);
       }
     };
-  }, []);
+  }, [modelId, initialPosition]);
 
   return (
     <div className="fixed inset-0 z-0 w-full h-full flex items-center justify-center overflow-hidden">
       <div className="w-full h-full flex items-center justify-center relative pointer-events-auto">
         <iframe
           ref={iframeRef}
-          title="PS1 With Feat Effect Disc"
+          title={title}
           className="w-full h-full border-0"
           allowFullScreen
           allow="autoplay; fullscreen; xr-spatial-tracking"
