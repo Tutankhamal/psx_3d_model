@@ -25,6 +25,15 @@ export default function Home() {
           <span className="text-sm text-neutral-500 group-hover:text-neutral-300">International Business Machines</span>
           <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-orange-500/0 via-orange-500/10 to-red-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         </Link>
+
+        <Link 
+          href="/dreamcast"
+          className="group relative px-8 py-6 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-300 flex flex-col items-center gap-4 w-full"
+        >
+          <span className="text-2xl font-bold text-neutral-200 group-hover:text-white">Sega Dreamcast</span>
+          <span className="text-sm text-neutral-500 group-hover:text-neutral-300">Sega Enterprises</span>
+          <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-400/0 via-blue-400/10 to-cyan-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        </Link>
       </div>
     </div>
   );
